@@ -6,6 +6,8 @@
   margin-left: auto;
   margin-right: auto;
   padding: 0 6rem 0 5rem;
+  display: flex;
+  flex-direction: column;
 
   @include lg {
     max-width: 1280px;
@@ -18,4 +20,16 @@
   @include sm {
     max-width: 640px;
   }
+}
+
+.navbar {
+  height: 8rem;
+  font-size: 1.4rem;
+}
+
+.content {
+  //background-color: palevioletred;
+  height: calc(100vh - 8rem);
+  font-size: 1.2rem;
+  overflow: hidden;
 }
