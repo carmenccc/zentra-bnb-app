@@ -142,7 +142,7 @@ dist
 .svelte-kit
 
 # Prisma
-src/generated/prisma/
+/generated/prisma/
 
 ### Others
 .env
