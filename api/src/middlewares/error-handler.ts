@@ -15,7 +15,7 @@ export const errorHandler: ErrorRequestHandler = (
 
   // Unkown error
   res.status(400).send({
-    errors: [{ messae: err.message }],
+    errors: [{ message: err.message }],
   });
 };
 

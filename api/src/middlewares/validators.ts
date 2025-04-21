@@ -18,3 +18,17 @@ export const validateRegistration = [
     next();
   },
 ];
+
+export const validateLogin = [
+  body("email").isEmail().withMessage("Email must be valid"),
+
+  body("password").trim().notEmpty().withMessage("Password is required"),
+
+  (req: Request, res: Response, next: NextFunction) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      throw new RequestValidationError(errors.array());
+    }
+    next();
+  },
+];
