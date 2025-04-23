@@ -4,6 +4,8 @@ import { HomePage } from "./routes/homePage/homePage";
 import { ListPage } from "./routes/ListPage/ListPage";
 import { SinglePage } from "./routes/SinglePage/SinglePage";
 import { ProfilePage } from "./routes/ProfilePage/ProfilePage";
+import { Login } from "./routes/Login/Login";
+import { Register } from "./routes/Register/Register";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ const router = createBrowserRouter([
       {
         path: "/:id",
         element: <SinglePage />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
       },
       {
         path: "/profile",

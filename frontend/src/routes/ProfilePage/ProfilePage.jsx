@@ -1,8 +1,23 @@
+import { useNavigate } from "react-router-dom";
 import { Chat } from "../../components/Chat/Chat";
 import { List } from "../../components/List/List";
+import { useAuth } from "../../context/AuthContext";
 import "./ProfilePage.scss";
+import { logout } from "../../api/auth";
 
 export const ProfilePage = () => {
+  const { updateUser, currentUser } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await logout();
+      updateUser(null);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="profilePage">
       {/* left */}
@@ -16,17 +31,15 @@ export const ProfilePage = () => {
           <div className="info">
             <span>
               Avatar:
-              <img
-                src="https://plus.unsplash.com/premium_photo-1661964412228-d4c51596f09a?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                alt=""
-              />
+              <img src={currentUser.avatar || "/noavatar.jpg"} alt="" />
             </span>
             <span>
-              Username <b>John Doe</b>
+              Username <b>{currentUser.username}</b>
             </span>
             <span>
-              E-mail:<b>john@gmail.com</b>
+              E-mail:<b>{currentUser.email}</b>
             </span>
+            <button onClick={handleLogout}>Logout</button>
           </div>
           {/* My list */}
           <div className="title">

@@ -3,40 +3,62 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { BadRequestError } from "../errors/bad-request-error.js";
 import jwt from "jsonwebtoken";
+import { UserData } from "@shared/types/models.js";
+import { ApiResponse } from "@shared/types/response.js";
 
-interface CurrentUserResponse {
-  currentUser: string | jwt.JwtPayload | null;
-}
+type CurrentUser = UserData | null;
 
 const prisma = new PrismaClient();
 
 export const getCurrentUser = async (
   req: Request,
-  res: Response<CurrentUserResponse>
+  res: Response<ApiResponse<CurrentUser>>
 ) => {
   // Check if there is a jwt in cookie
   if (!req.session?.jwt) {
-    res.json({ currentUser: null });
+    res.json({ success: true, data: null });
     return;
   }
 
   // Verify if jwt is valid
   try {
-    const payload = jwt.verify(req.session.jwt, process.env.JWT_KEY!);
-    res.send({ currentUser: payload });
+    const payload = jwt.verify(req.session.jwt, process.env.JWT_KEY!) as {
+      id: number;
+    };
+    // Fetch user info
+    const user = await prisma.user.findUnique({
+      where: { id: payload.id },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        avatar: true,
+        createdAt: true,
+      },
+    });
+    res.send({ success: true, data: user });
   } catch (err) {
-    res.send({ currentUser: null });
+    res.send({
+      success: false,
+      errors: [{ message: (err as Error).message || "Invalid access" }],
+    });
   }
 };
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (
+  req: Request,
+  res: Response<ApiResponse<null>>
+) => {
   // Retrieve request data
   const { email, username, password } = req.body;
 
   // Check if email exists
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (existingUser) {
-    throw new BadRequestError("Email in use");
+    // throw new BadRequestError("Email in use");
+    res
+      .status(200)
+      .json({ success: false, errors: [{ message: "Email in use" }] });
   }
 
   // Hash password
@@ -61,20 +83,15 @@ export const register = async (req: Request, res: Response) => {
   );
 
   // Send jwt as cookie
-  const { password: passwordData, ...userInfo } = newUser;
-
   req.session = {
     jwt: userJwt,
   };
 
   // Success message
-  res.status(201).json({
-    message: "New user registered",
-    user: userInfo,
-  });
+  res.status(201).json({ success: true, message: "New user registered" });
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response<ApiResponse<null>>) => {
   // Retrieve request data
   const { email, password } = req.body;
 
@@ -86,7 +103,12 @@ export const login = async (req: Request, res: Response) => {
 
   // Check if password is correct
   const isPasswordMatched = await bcrypt.compare(password, user.password);
-  if (!isPasswordMatched) throw new BadRequestError("Invalid credentials");
+  if (!isPasswordMatched) {
+    // throw new BadRequestError("Invalid credentials")
+    res
+      .status(200)
+      .json({ success: false, errors: [{ message: "Invalid credentials" }] });
+  }
 
   // Generate JWT
   const userJwt = jwt.sign(
@@ -98,16 +120,24 @@ export const login = async (req: Request, res: Response) => {
   );
 
   // Send jwt as cookie
-  const { password: passwordData, ...userInfo } = user;
   req.session = {
     jwt: userJwt,
   };
-
   // Success message
-  res.status(200).json({ message: "Login successful", user: userInfo });
+  res.status(200).json({ success: true, message: "Login successful" });
 };
 
-export const logout = async (req: Request, res: Response) => {
-  req.session = null;
-  res.status(200).json({ message: "Logout successful" });
+export const logout = async (
+  req: Request,
+  res: Response<ApiResponse<null>>
+) => {
+  try {
+    req.session = null;
+    res.status(200).json({ success: true, message: "Logout successful" });
+  } catch (err) {
+    console.log(err);
+    throw new BadRequestError(
+      (err as Error)?.message || "Unkown error on logout"
+    );
+  }
 };
