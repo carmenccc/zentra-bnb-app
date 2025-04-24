@@ -1,0 +1,35 @@
+name: Build and Deploy Backend
+
+on:
+  push:
+    paths:
+      - "api/**"
+      - ".github/workflows/backend.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./api
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Docker build
+        run: docker build -t zentra-backend .
+
+      # optionally push to a registry or deploy from here
