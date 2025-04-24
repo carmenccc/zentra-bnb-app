@@ -1,5 +1,4 @@
-import { ApiResponse } from "@shared/index";
-import { UserData } from "@shared/types/models";
+import { ApiResponse, UserData } from "@zentra/shared";
 
 export type CurrentUser = UserData | null;
 

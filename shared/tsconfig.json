@@ -1,16 +1,17 @@
 {
-  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "declarationMap": true,
     "emitDeclarationOnly": false,
-    "module": "ESNext",
-    "moduleResolution": "Node",
     "outDir": "dist",
-    "rootDir": "src",
-    "target": "ESNext",
-    "strict": true
+    "rootDir": "src"
   },
   "include": ["src"]
 }

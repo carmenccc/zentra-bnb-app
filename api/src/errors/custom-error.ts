@@ -1,4 +1,4 @@
-import { ApiError } from "@shared/types/response";
+import { ApiError } from "@zentra/shared";
 
 export abstract class CustomError extends Error {
   abstract statusCode: number;

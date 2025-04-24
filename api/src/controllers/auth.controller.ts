@@ -3,8 +3,8 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { BadRequestError } from "../errors/bad-request-error.js";
 import jwt from "jsonwebtoken";
-import { UserData } from "@shared/types/models.js";
-import { ApiResponse } from "@shared/types/response.js";
+import { UserData } from "@zentra/shared";
+import { ApiResponse } from "@zentra/shared";
 
 type CurrentUser = UserData | null;
 
