@@ -18,7 +18,7 @@
     "@types/cors": "^2.8.17",
     "@types/jsonwebtoken": "^9.0.9",
     "@zentra/shared": "^1.0.0",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "cookie-session": "^2.1.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",

@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { BadRequestError } from "../errors/bad-request-error";
 import jwt from "jsonwebtoken";
 import { UserData } from "@zentra/shared";
