@@ -13,7 +13,7 @@ RUN npm run build
 # 2. Serve with Nginx
 FROM nginx:alpine
 ARG CONTEXT
-COPY --from=builder /$CONTEXT/build /usr/share/nginx/html
+COPY --from=builder /$CONTEXT/dist /usr/share/nginx/html
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
