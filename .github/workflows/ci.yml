@@ -22,11 +22,11 @@ jobs:
 
       - name: Build backend image
         run: |
-          docker build -f infra/docker/backend/Dockerfile.prod -t airbnb-backend .
+          docker build -f infra/docker/backend/Dockerfile.prod --build-arg CONTEXT=api -t zentra-backend .
 
       - name: Build frontend image
         run: |
-          docker build -f infra/docker/frontend/Dockerfile.prod -t airbnb-frontend .
+          docker build -f infra/docker/frontend/Dockerfile.prod --build-arg CONTEXT=frontend -t zentra-frontend .
 
       - name: Confirm success
         run: echo "✅ CI ran successfully and both images were built!"

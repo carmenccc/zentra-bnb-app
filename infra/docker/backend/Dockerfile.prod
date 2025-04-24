@@ -1,20 +1,22 @@
 # Builder
 FROM node:18-alpine AS builder
-WORKDIR /app
+ARG CONTEXT
+WORKDIR /$CONTEXT
 
-COPY api/package*.json ./
+COPY $CONTEXT/package*.json ./
 RUN npm install
-COPY api/ ./
+COPY $CONTEXT/ ./
 RUN npm run build
 RUN npx prisma generate
 
 # Final
 FROM node:18-alpine
-WORKDIR /app
+ARG CONTEXT
+WORKDIR /$CONTEXT
 
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/prisma ./prisma
-COPY api/package*.json ./
+COPY --from=builder /$CONTEXT/dist ./dist
+COPY --from=builder /$CONTEXT/node_modules ./node_modules
+COPY --from=builder /$CONTEXT/prisma ./prisma
+COPY $CONTEXT/package*.json ./
 
 CMD ["node", "dist/index.js"]
