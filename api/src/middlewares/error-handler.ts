@@ -1,6 +1,6 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import { CustomError } from "../errors/custom-error.js";
-import { ApiResponse } from "@shared/types/response.js";
+import { ApiResponse } from "@zentra/shared";
 
 /// All response will be formated as ApiResponse
 export const errorHandler: ErrorRequestHandler = (
