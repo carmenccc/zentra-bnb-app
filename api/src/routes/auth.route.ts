@@ -5,11 +5,8 @@ import {
   login,
   logout,
   register,
-} from "../controllers/auth.controller.js";
-import {
-  validateLogin,
-  validateRegistration,
-} from "../middlewares/validators.js";
+} from "../controllers/auth.controller";
+import { validateLogin, validateRegistration } from "../middlewares/validators";
 
 const router = Router();
 

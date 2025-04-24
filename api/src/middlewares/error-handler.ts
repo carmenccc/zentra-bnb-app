@@ -1,5 +1,5 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import { CustomError } from "../errors/custom-error.js";
+import { CustomError } from "../errors/custom-error";
 import { ApiResponse } from "@zentra/shared";
 
 /// All response will be formated as ApiResponse

@@ -1,7 +1,7 @@
 import express from "express";
-import authRouter from "./routes/auth.route.js";
-import { errorHandler } from "./middlewares/error-handler.js";
-import { NotFoundError } from "./errors/not-found-error.js";
+import authRouter from "./routes/auth.route";
+import { errorHandler } from "./middlewares/error-handler";
+import { NotFoundError } from "./errors/not-found-error";
 import cookieSession from "cookie-session";
 import cors from "cors";
 
