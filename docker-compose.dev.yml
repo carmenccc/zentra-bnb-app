@@ -5,8 +5,10 @@ services:
     build:
       context: .
       dockerfile: infra/docker/frontend/Dockerfile.dev
+    env_file:
+      - ./frontend/.env
     ports:
-      - "5173:5173"
+      - "5173:80"
     volumes:
       - ./frontend:/app
       - /app/node_modules
