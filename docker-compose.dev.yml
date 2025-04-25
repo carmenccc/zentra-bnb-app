@@ -4,7 +4,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: infra/docker/frontend/Dockerfile.dev
+      dockerfile: infra-dev/docker/frontend/Dockerfile.dev
     env_file:
       - ./frontend/.env
     ports:
@@ -16,7 +16,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: infra/docker/backend/Dockerfile.dev
+      dockerfile: infra-dev/docker/backend/Dockerfile.dev
     env_file:
       - ./api/.env
     ports:
