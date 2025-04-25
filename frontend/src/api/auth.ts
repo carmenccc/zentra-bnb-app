@@ -6,7 +6,7 @@ import {
   RegisterInput,
 } from "../types/auth";
 
-const API_BASE = `${import.meta.env.VITE_BACKEND_API}/auth`;
+const API_BASE = `/api/auth`;
 
 export const login = async (data: LoginInput): Promise<AuthResponse> => {
   try {

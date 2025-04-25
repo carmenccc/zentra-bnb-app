@@ -12,8 +12,6 @@ yarn-error.log*
 
 # Environment
 .env
-**/.env
-.env.*.local
 
 # Git
 .git
