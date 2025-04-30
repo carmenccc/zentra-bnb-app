@@ -13,7 +13,7 @@ export const Navbar = () => {
       <div className="left">
         <a className="logo" href="/">
           <img src="./logo.png" alt="" />
-          <span>CarmEstate</span>
+          <span>ZentraB&B</span>
         </a>
         <a href="/">Home</a>
         <a href="/">About</a>

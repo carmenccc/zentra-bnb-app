@@ -1,0 +1,9 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="ic">
+<g id="icon">
+<rect id="Rectangle" x="0.666748" y="15.3333" width="18.6667" height="2" rx="1" stroke="#383838" stroke-linecap="round"/>
+<path id="Path" d="M18.6668 14.6667C18.6668 9.8802 14.7866 6 10.0002 6C5.2137 6 1.3335 9.8802 1.3335 14.6667" stroke="#383838" stroke-linecap="round"/>
+<path id="Oval" fill-rule="evenodd" clip-rule="evenodd" d="M10.0001 5.33317C10.7365 5.33317 11.3334 4.73622 11.3334 3.99984C11.3334 3.26346 10.7365 2.6665 10.0001 2.6665C9.2637 2.6665 8.66675 3.26346 8.66675 3.99984C8.66675 4.73622 9.2637 5.33317 10.0001 5.33317Z" stroke="#383838" stroke-linecap="round"/>
+</g>
+</g>
+</svg>

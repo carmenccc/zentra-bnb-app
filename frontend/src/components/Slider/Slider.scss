@@ -68,11 +68,28 @@
     height: 100%;
     object-fit: cover;
     border-radius: 10px;
-    cursor: pointer;
+    // cursor: pointer;
   }
 
   .bigImage {
     flex: 3;
+    position: relative;
+
+    .icon-favor {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      cursor: pointer;
+
+      svg {
+        width: 3rem;
+        fill: white;
+        stroke: gray;
+        &.saved {
+          fill: red;
+        }
+      }
+    }
   }
 
   .smallImages {

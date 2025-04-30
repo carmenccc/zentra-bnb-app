@@ -30,10 +30,10 @@ export const Card = ({ item }) => {
           </div>
           <div className="icons">
             <div className="icon">
-              <img src="/save.png" alt="" />
+              <img src="/icons/save.png" alt="" />
             </div>
             <div className="icon">
-              <img src="/chat.png" alt="" />
+              <img src="/icons/chat.png" alt="" />
             </div>
           </div>
         </div>

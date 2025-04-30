@@ -1,0 +1,70 @@
+// theme.scss
+
+// 🎨 Color Palette
+$color-primary: #fece51;
+$color-secondary: rgba(238, 231, 244, 0.692); // Soft Lavender
+$color-accent: #ff7a1a;
+$color-background: #f9fafb; // Cloud White
+$color-text-primary: #121318; // Graphite Gray
+$color-text-secondary: #555b6e; // Graphite Gray
+$color-text-tertiary: #888; // Graphite Gray
+$color-subtle: #e4e4e4; // Graphite Gray
+
+// 🌟 Typography
+$font-family-base: "Poppins", "Helvetica Neue", sans-serif;
+$font-size-base: 16px;
+$font-size-heading: 32px;
+$font-size-subheading: 24px;
+$font-size-small: 14px;
+
+// 🧱 Spacing & Layout
+$spacing-unit: 8px;
+$border-radius-base: 12px;
+
+// 🌫️ Shadows
+$box-shadow-base: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+// 📦 Mixins
+@mixin centered-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin responsive-text($mobile-size, $desktop-size) {
+  font-size: $mobile-size;
+
+  @media (min-width: 768px) {
+    font-size: $desktop-size;
+  }
+}
+
+@mixin card-style {
+  background-color: $color-background;
+  border-radius: $border-radius-base;
+  box-shadow: $box-shadow-base;
+  padding: $spacing-unit * 2;
+}
+
+// 🧹 Global Reset (optional)
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+// 🎨 Pastel Purple Shades
+$purple-lightest: #f1e9ff;
+$purple-light: #e0ccff;
+$purple-base: #d8c4f6;
+$purple-dark: #b49de1;
+$purple-darkest: #937acc;
+
+// 🎨 Pastel Orange Shades
+$orange-lightest: #ffead8;
+$orange-light: #ffd1a6;
+$orange-base: #ffbc80;
+$orange-dark: #ff9e4d;
+$orange-darkest: #ff7a1a;

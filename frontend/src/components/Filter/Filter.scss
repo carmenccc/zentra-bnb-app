@@ -1,3 +1,5 @@
+@use "../../theme.scss" as *;
+
 .filter {
   display: flex;
   flex-direction: column;
@@ -5,7 +7,19 @@
 
   h1 {
     font-weight: 300;
-    font-size: 2.4rem;
+    font-size: 2rem;
+
+    b {
+      color: var(--Dark, #383838);
+      border-bottom: solid 3px $color-accent;
+
+      /* Header H6 M 20 */
+      font-family: Geller;
+      font-size: 2.4rem;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 100%; /* 20px */
+    }
   }
 
   .item {
@@ -37,12 +51,20 @@
     display: flex;
     justify-content: space-between;
 
+    .date-picker {
+      width: max-content;
+
+      input {
+        width: max-content;
+      }
+    }
+
     button {
       width: 10rem;
       padding: 1rem;
       border: none;
       cursor: pointer;
-      background-color: #fece51;
+      background-color: $color-accent;
     }
 
     img {

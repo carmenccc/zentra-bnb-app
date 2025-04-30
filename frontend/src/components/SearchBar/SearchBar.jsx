@@ -1,18 +1,40 @@
 import { useState } from "react";
 import "./SearchBar.scss";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { addDays } from "date-fns";
+import { Link } from "react-router-dom";
 
-const types = ["buy", "rent"];
+const types = ["stay", "rent"];
 
 export const SearchBar = () => {
   const [query, setQuery] = useState({
-    type: "buy",
-    location: "",
-    minPrice: 0,
-    maxPrice: 0,
+    type: "stay",
+    city: "London",
+    checkInDate: new Date(),
+    checkOutDate: addDays(new Date(), 3),
+    guests: "",
   });
 
   const switchType = (val) => {
     setQuery((prev) => ({ ...prev, type: val }));
+  };
+
+  const handleCityChange = (val) => {
+    setQuery((prev) => ({ ...prev, city: val }));
+  };
+  const handleGuestsChange = (val) => {
+    setQuery((prev) => ({ ...prev, guests: val }));
+  };
+
+  const handleDateChange = (dates) => {
+    const [start, end] = dates;
+
+    setQuery((prev) => ({
+      ...prev,
+      checkInDate: start,
+      checkOutDate: end,
+    }));
   };
 
   return (
@@ -29,24 +51,44 @@ export const SearchBar = () => {
         ))}
       </div>
       <form action="">
-        <input type="text" name="location" placeholder="City Location" />
-        <input
-          type="number"
-          name="minPrice"
-          min={0}
-          max={100000000}
-          placeholder="Min Price"
-        />
-        <input
-          type="number"
-          name="maxPrice"
-          min={0}
-          max={100000000}
-          placeholder="Max Price"
-        />
-        <button>
-          <img src="/search.png" alt="" />
-        </button>
+        <div className="form-group">
+          <label>Destination</label>
+          <input
+            type="text"
+            name="city"
+            placeholder="City location"
+            onChange={handleCityChange}
+          />
+        </div>
+        <div className="form-group date-picker">
+          <label>Checkin Date</label>
+          <DatePicker
+            selectsRange
+            startDate={query.checkInDate}
+            endDate={query.checkOutDate}
+            minDate={new Date()}
+            onChange={handleDateChange}
+          />
+        </div>
+        <div className="form-group">
+          <label>Guest</label>
+          <input
+            type="number"
+            name="guest"
+            id="guest"
+            placeholder="Number of travellers"
+            onChange={handleGuestsChange}
+          />
+        </div>
+        <div className="btnSearch">
+          <Link
+            to={`/list?type=${query.type}&city=${query.city}&guests=${query.guests}`}
+          >
+            <button>
+              <img src="/search.png" alt="" />
+            </button>
+          </Link>
+        </div>
       </form>
     </div>
   );

@@ -1,0 +1,10 @@
+.calendar-container {
+  width: 100%;
+  font-size: 1.6rem;
+  display: flex;
+  justify-content: center;
+
+  :only-child {
+    width: 100%;
+  }
+}

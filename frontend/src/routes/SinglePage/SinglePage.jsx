@@ -2,11 +2,41 @@ import { Slider } from "../../components/Slider/Slider";
 import { Map } from "../../components/Map/Map";
 import "./SinglePage.scss";
 import { singlePostData, userData } from "../../lib/dummydata";
+import { Tab } from "../../components/Tab/Tab";
+import { ListingReservation } from "../../components/ListingReservation/ListingReservation";
+import { ListingOverview } from "../../components/ListingOverview/ListingOverview";
+import { useState } from "react";
 
 export const SinglePage = () => {
+  const [selectedDates, setSelectedDates] = useState({
+    startDate: new Date("2025-05-02"),
+    endDate: new Date("2025-05-05"),
+    key: "selection",
+  });
+
+  const tabs = [
+    {
+      label: "overview",
+      content: (
+        <ListingOverview
+          description={singlePostData.description}
+          amenities={singlePostData.amenities}
+          features={singlePostData.features}
+          roomTypes={singlePostData.roomTypes}
+        />
+      ),
+    },
+    {
+      label: "review",
+      content:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo doloribus sint maiores, facere maxime dolores dicta rerum nobis non aliquam possimus doloremque eius et ut in laborum itaque odio molestias.",
+    },
+  ];
+
   return (
     <div className="singlePage">
-      <div className="details">
+      {/* Left panel */}
+      <div className="left">
         <div className="wrapper">
           <Slider images={singlePostData.images} />
           {/* titleSec */}
@@ -15,11 +45,16 @@ export const SinglePage = () => {
             <div className="top">
               <div className="post">
                 <h1>{singlePostData.title}</h1>
-                <div className="address">
-                  <img src="/pin.png" alt="" />
-                  <span>{singlePostData.address}</span>
+                <div className="subtitle">
+                  <div className="address">
+                    <img src="/pin.png" alt="" />
+                    <span>{singlePostData.address}</span>
+                  </div>
+                  <div className="price-tag">
+                    <div className="price">$ {singlePostData.price}</div>
+                    <span>/ night</span>
+                  </div>
                 </div>
-                <div className="price">$ {singlePostData.price}</div>
               </div>
               <div className="user">
                 <img src={userData.img} alt="" />
@@ -27,53 +62,30 @@ export const SinglePage = () => {
               </div>
             </div>
             {/* bottom */}
-            <div className="bottom">{singlePostData.description}</div>
+            <div className="bottom">
+              <Tab tabs={tabs} />
+            </div>
           </div>
         </div>
       </div>
-      <div className="features">
+
+      {/* Right panel */}
+      <div className="right">
         <div className="wrapper">
-          <p className="title">General</p>
-          <div className="listVertical">
-            <div className="feature">
-              <img src="/utility.png" alt="" />
-              <div className="featureText">
-                <span>Utilities</span>
-                <p>Renter is responsible</p>
-              </div>
-            </div>
-            <div className="feature">
-              <img src="/pet.png" alt="" />
-              <div className="featureText">
-                <span>Pet Policy</span>
-                <p>Pets Allowed</p>
-              </div>
-            </div>
-            <div className="feature">
-              <img src="/fee.png" alt="" />
-              <div className="featureText">
-                <span>Property Fees</span>
-                <p>Must have 3x the rent in total household income</p>
-              </div>
-            </div>
+          {/* Map */}
+          <div className="mapContainer">
+            <Map items={[singlePostData]} />
           </div>
-          <p className="title">Room Sizes</p>
-          <div className="sizes">
-            <div className="size">
-              <img src="/size.png" alt="" />
-              <span>80 sqft</span>
-            </div>
-            <div className="size">
-              <img src="/bed.png" alt="" />
-              <span>2 beds</span>
-            </div>
-            <div className="size">
-              <img src="/bath.png" alt="" />
-              <span>1 bathroom</span>
-            </div>
-          </div>
-          <p className="title">Nearby Places</p>
-          <div className="listHorizontal">
+          <ListingReservation
+            price={100}
+            dateRange={selectedDates}
+            onChangeDate={setSelectedDates}
+            disabledDates={singlePostData.disabledDates}
+          />
+          <button className="btn-chat">Chat with Owner</button>
+
+          {/* Nearby places */}
+          {/* <div className="listHorizontal">
             <div className="feature">
               <img src="/school.png" alt="" />
               <div className="featureText">
@@ -95,21 +107,55 @@ export const SinglePage = () => {
                 <p>200m away</p>
               </div>
             </div>
-          </div>
-          <p className="title">Location</p>
-          <div className="mapContainer">
-            <Map items={[singlePostData]} />
-          </div>
-          <div className="buttons">
-            <button>
-              <img src="/chat.png" alt="" />
-              Send a Message
-            </button>
-            <button>
-              <img src="/save.png" alt="" />
-              Save the Place
-            </button>
-          </div>
+          </div> */}
+          {/* Room size */}
+          {/* <p className="title">Room Sizes</p>
+          <div className="sizes">
+            <div className="size">
+              <img src="/size.png" alt="" />
+              <span>80 sqft</span>
+            </div>
+            <div className="size">
+              <img src="/bed.png" alt="" />
+              <span>2 beds</span>
+            </div>
+            <div className="size">
+              <img src="/bath.png" alt="" />
+              <span>1 bathroom</span>
+            </div>
+          </div> */}
+          {/* General featrues */}
+          {/* <p className="title">General</p>
+          <div className="listVertical">
+            <div className="feature">
+              <img src="/icons/ic.svg" alt="" />
+
+              <div className="featureText">
+                <span>Service</span>
+                <p>Owner is responsible</p>
+              </div>
+            </div>
+            <div className="feature">
+              <img src="/pet.png" alt="" />
+              <div className="featureText">
+                <span>Pet Policy</span>
+                <p>Pets Allowed</p>
+              </div>
+            </div>
+            <div className="feature">
+              <img src="/fee.png" alt="" />
+              <div className="featureText">
+                <span>Property Fees</span>
+                <p>Must have 3x the rent in total household income</p>
+              </div>
+            </div>
+          </div> */}
+
+          {/* <ListingReservation
+            dateRange={singlePostData.dateRange}
+            // onChangeDate={() => {}}
+            disabledDates={singlePostData.disabledDates}
+          /> */}
         </div>
       </div>
     </div>

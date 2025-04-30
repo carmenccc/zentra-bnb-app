@@ -6,7 +6,7 @@ export const HomePage = () => {
     <div className="homePage">
       <div className="textContainer">
         <div className="wrapper">
-          <h1 className="title">Find Real Estate & Get Your Dream Place</h1>
+          <h1 className="title">Stay Centered, Stay Anywhere.</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque,
             amet obcaecati! Voluptatum deserunt porro delectus dolorum,
