@@ -9,11 +9,10 @@ interface ListingReservationProps {
   price: number;
   dateRange: Range;
   //   totalPrice: number;
-  onChangeDate: () => void;
+  onChangeDate: (value: Range) => void;
   //   onSubmit: () => void;
   //   disabled?: boolean;
   disabledDates: Date[];
-  guests: number;
 }
 
 export const ListingReservation: React.FC<ListingReservationProps> = ({
@@ -24,8 +23,8 @@ export const ListingReservation: React.FC<ListingReservationProps> = ({
   //   onSubmit,
   //   disabled,
   disabledDates,
-  guests,
 }) => {
+  const [guests, setGuests] = useState(0);
   const pricePerNight = useMemo(() => {
     return (guests || 1) * price;
   }, [guests, price]);
@@ -45,7 +44,7 @@ export const ListingReservation: React.FC<ListingReservationProps> = ({
             name="guest"
             id="guest"
             value={guests || 1}
-            // onChange={handleGuestsChange}
+            onChange={(e) => setGuests(Number(e.target.value))}
           />
           <label>Guests</label>
         </div>

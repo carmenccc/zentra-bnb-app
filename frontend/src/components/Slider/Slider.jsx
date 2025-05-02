@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./Slider.scss";
 
-export const Slider = ({ images, isSaved }) => {
+export const Slider = ({ images }) => {
   const [imageIndex, setImageIndex] = useState(null);
-  const [saved, setSaved] = useState(isSaved || false);
+  const [saved, setSaved] = useState(false);
   const changeSlide = (direction) => {
     if (direction === "left") {
       if (imageIndex === 0) {

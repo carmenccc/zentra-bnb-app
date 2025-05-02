@@ -1,18 +1,60 @@
 import { Slider } from "../../components/Slider/Slider";
 import { Map } from "../../components/Map/Map";
 import "./SinglePage.scss";
-import { singlePostData, userData } from "../../lib/dummydata";
+import { userData } from "../../lib/dummydata";
 import { Tab } from "../../components/Tab/Tab";
 import { ListingReservation } from "../../components/ListingReservation/ListingReservation";
 import { ListingOverview } from "../../components/ListingOverview/ListingOverview";
 import { useState } from "react";
+import { Range } from "react-date-range";
+
+const mockDisabledDates = [
+  new Date("2025-05-10"),
+  new Date("2025-05-11"),
+  new Date("2025-05-20"),
+];
+
+const singlePostData = {
+  id: 1,
+  title: "Beautiful Apartment",
+  price: 1200,
+  images: [
+    "https://images.pexels.com/photos/1918291/pexels-photo-1918291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "https://images.pexels.com/photos/1428348/pexels-photo-1428348.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "https://images.pexels.com/photos/2062426/pexels-photo-2062426.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+    "https://images.pexels.com/photos/2467285/pexels-photo-2467285.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+  ],
+  bedRooms: 2,
+  bathroom: 1,
+  size: 861,
+  latitude: 51.5074,
+  longitude: -0.1278,
+  city: "London",
+  address: "1234 Broadway St",
+  description:
+    "Future alike hill pull picture swim magic chain seed engineer nest outer raise bound easy poetry gain loud weigh me recognize farmer bare danger. actually put square leg vessels earth engine matter key cup indeed body film century shut place environment were stage vertical roof bottom lady function breeze darkness beside tin view local breathe carbon swam declared magnet escape has from pile apart route coffee storm someone hold space use ahead sheep jungle closely natural attached part top grain your grade trade corn salmon trouble new bend most teacher range anybody every seat fifteen eventually",
+  amenities: [1, 2, 3, 4, 6],
+  features: [
+    "Coffee maker",
+    "Air conditioning",
+    "Desk",
+    "Refrigerator",
+    "Bath",
+    "Safe",
+    "Rack",
+  ],
+  roomTypes: ["Double Room", "Suite", "Twin Room", "Deluxe"],
+  disabledDates: mockDisabledDates,
+};
+
+const initialDateRange: Range = {
+  startDate: new Date("2025-05-02"),
+  endDate: new Date("2025-05-05"),
+  key: "selection",
+};
 
 export const SinglePage = () => {
-  const [selectedDates, setSelectedDates] = useState({
-    startDate: new Date("2025-05-02"),
-    endDate: new Date("2025-05-05"),
-    key: "selection",
-  });
+  const [selectedDates, setSelectedDates] = useState(initialDateRange);
 
   const tabs = [
     {

@@ -23,4 +23,80 @@ model User {
   password   String
   avatar     String?
   createdAt  DateTime    @default(now())
+
+  listings       Listing[]
+  savedListings  SavedListing[]
+}
+
+enum ListingType {
+  stay
+  rent
+}
+
+enum PropertyType {
+  house
+  apartment
+  cabin
+  villa
+  other
+}
+
+model Listing {
+  id           String        @id @default(uuid()) @map("_id")
+  title        String
+  price        Float
+  images       String[]
+  address      String
+  city         String
+  latitude     String
+  longitude    String
+  type         ListingType
+  property     PropertyType
+  createdAt    DateTime      @default(now())
+
+  user         User          @relation(fields: [userId], references: [id])
+  userId       Int
+
+  listingDetail ListingDetail?
+  savedListings SavedListing[]
+}
+
+model ListingDetail {
+  id         String       @id @default(uuid()) @map("_id")
+  description String
+  utilities   String?
+  pet         String?
+  size        Int?
+
+  amenities   Amenity[]   @relation("ListingAmenities")
+  features    String[]
+  roomTypes   RoomType[]  @relation("ListingRoomTypes")
+
+  listing     Listing     @relation(fields: [listingId], references: [id])
+  listingId   String      @unique
+}
+
+model SavedListing {
+  id         String   @id @default(uuid()) @map("_id")
+  user       User     @relation(fields: [userId], references: [id])
+  listing    Listing  @relation(fields: [listingId], references: [id])
+  userId     Int
+  listingId  String
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, listingId])
+}
+
+model Amenity {
+  id        Int              @id @default(autoincrement())
+  name      String           @unique
+  icon      String
+  listings  ListingDetail[]  @relation("ListingAmenities")
+}
+
+model RoomType {
+  id        Int              @id @default(autoincrement())
+  name      String           @unique
+  icon      String
+  listings  ListingDetail[]  @relation("ListingRoomTypes")
 }
