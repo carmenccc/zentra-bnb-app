@@ -18,6 +18,8 @@ export type Listing = {
   type: ListingType;
   property: PropertyType;
   createdAt: Date;
+  userId: number;
+  listingDetail?: ListingDetail;
 };
 
 export enum ListingType {

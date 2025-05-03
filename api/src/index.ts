@@ -1,5 +1,6 @@
 import express from "express";
 import authRouter from "./routes/auth.route";
+import listingRouter from "./routes/listing.route";
 import { errorHandler } from "./middlewares/error-handler";
 import { NotFoundError } from "./errors/not-found-error";
 import cookieSession from "cookie-session";
@@ -17,6 +18,7 @@ app.use(
 );
 
 app.use("/api/auth", authRouter);
+app.use("/api/listing", listingRouter);
 
 app.use((req, res, next) => {
   console.log("404 route reached");
