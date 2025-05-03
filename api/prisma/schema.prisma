@@ -72,7 +72,7 @@ model ListingDetail {
   features    String[]
   roomTypes   RoomType[]  @relation("ListingRoomTypes")
 
-  listing     Listing     @relation(fields: [listingId], references: [id])
+  listing     Listing     @relation(fields: [listingId], references: [id], onDelete: Cascade)
   listingId   String      @unique
 }
 
