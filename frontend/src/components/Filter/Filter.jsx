@@ -5,7 +5,6 @@ import DatePicker from "react-datepicker";
 import { addDays } from "date-fns";
 
 export const Filter = () => {
-  const [stayCount, setStayCount] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState({
     type: searchParams.get("type") || "",
@@ -30,9 +29,6 @@ export const Filter = () => {
 
   return (
     <div className="filter">
-      <h1>
-        {stayCount} {query.type}s available in <b>London</b>
-      </h1>
       <div className="top">
         {/* <div className="item">
           <label htmlFor="city">Location</label>

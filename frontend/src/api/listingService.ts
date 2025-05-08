@@ -1,0 +1,58 @@
+import { ApiResponse, GetListingsQuery, Listing } from "@zentra/shared";
+import axios, { AxiosError } from "axios";
+
+const API_BASE = `/api/listing`;
+
+type ListingsResponse = Listing[];
+type ListingResponse = Listing;
+
+export const fetchListings = async (
+  params?: GetListingsQuery
+): Promise<ListingsResponse> => {
+  // try {
+  console.log("Fetching data");
+  const res = await axios.get<ApiResponse<ListingsResponse>>(`${API_BASE}/`, {
+    params,
+  });
+  console.log(res.data.data);
+  return res.data.data || [];
+  // } catch (err) {
+  //   console.log(err);
+  //   return [];
+  // }
+};
+
+export const fetchSingleListing = async (
+  id: string
+): Promise<ListingResponse> => {
+  const res = await axios.get<ApiResponse<ListingResponse>>(
+    `${API_BASE}/${id}`
+  );
+
+  console.log(res.data);
+  // TEMP
+  return res.data.data!;
+};
+
+export const saveListing = async (listingId: string) => {
+  try {
+    const res = await axios.post(`${API_BASE}/save`, {
+      listingId,
+    });
+
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const unsaveListing = async (listingId: string) => {
+  try {
+    console.log("deleting save");
+    const res = await axios.delete(`${API_BASE}/save/${listingId}`);
+
+    return res.data;
+  } catch (err) {
+    console.log(err);
+  }
+};

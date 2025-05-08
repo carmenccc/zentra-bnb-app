@@ -2,9 +2,8 @@ import { useState } from "react";
 import "./Register.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser, register } from "../../api/auth";
-import { RegisterInput } from "../../types/auth";
 import { useAuth } from "../../context/AuthContext";
-import { CurrentUser } from "@shared/index";
+import { UserData } from "@zentra/shared";
 
 export const Register = () => {
   const [error, setError] = useState("");
@@ -29,7 +28,7 @@ export const Register = () => {
     }
 
     // Register
-    const input: RegisterInput = {
+    const input = {
       username: username as string,
       email: email as string,
       password: password as string,
@@ -42,7 +41,7 @@ export const Register = () => {
       // Update current user context
       const currentUserRes = await getCurrentUser();
       console.log(currentUserRes);
-      updateUser((currentUserRes.data as CurrentUser) || null);
+      updateUser((currentUserRes.data as UserData) || null);
       navigate("/");
     }
 

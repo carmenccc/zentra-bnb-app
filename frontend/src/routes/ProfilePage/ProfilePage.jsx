@@ -46,12 +46,12 @@ export const ProfilePage = () => {
             <h1>My List</h1>
             <button>Create New Post</button>
           </div>
-          <List />
+          {/* <List /> */}
           {/* Saved list */}
           <div className="title">
             <h1>Saved List</h1>
           </div>
-          <List />
+          {/* <List /> */}
         </div>
       </div>
 

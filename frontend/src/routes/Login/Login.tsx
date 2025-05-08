@@ -3,7 +3,7 @@ import "./Login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser, login } from "../../api/auth";
 import { useAuth } from "../../context/AuthContext";
-import { CurrentUser } from "@shared/index";
+import { UserData } from "@zentra/shared";
 
 export const Login = () => {
   const [error, setError] = useState("");
@@ -29,7 +29,7 @@ export const Login = () => {
     if (res.success) {
       // Update current user context
       const currentUserRes = await getCurrentUser();
-      updateUser((currentUserRes.data as CurrentUser) || null);
+      updateUser((currentUserRes.data as UserData) || null);
       navigate("/");
     }
 

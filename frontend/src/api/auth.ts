@@ -1,10 +1,21 @@
 import axios, { AxiosError } from "axios";
-import {
-  AuthResponse,
-  CurrentUserResponse,
-  LoginInput,
-  RegisterInput,
-} from "../types/auth";
+import { ApiResponse, UserData } from "@zentra/shared";
+
+type CurrentUser = UserData | null;
+
+interface LoginInput {
+  email: string;
+  password: string;
+}
+
+interface RegisterInput {
+  email: string;
+  username: string;
+  password: string;
+}
+
+type AuthResponse = ApiResponse<null>;
+type CurrentUserResponse = ApiResponse<CurrentUser>;
 
 const API_BASE = `/api/auth`;
 

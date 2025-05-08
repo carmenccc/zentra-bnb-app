@@ -17,9 +17,14 @@ export type Listing = {
   longitude: string;
   type: ListingType;
   property: PropertyType;
+  guestsMin: number;
+  guestsMax: number;
+
   createdAt: Date;
   userId: number;
   listingDetail?: ListingDetail;
+  user?: { username: string; avatar: string | null };
+  isSaved: boolean;
 };
 
 export enum ListingType {
@@ -41,6 +46,8 @@ export type ListingDetail = {
   utilities?: string;
   pet?: string;
   size?: number;
+  bedroom: number;
+  bathroom: number;
   amenities?: Amenity[];
   features?: string[];
   roomTypes?: RoomType[];

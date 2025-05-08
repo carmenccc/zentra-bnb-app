@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@zentra/shared": "^1.0.2",
+    "@tanstack/react-query": "^5.75.1",
+    "@tanstack/react-query-devtools": "^5.75.4",
+    "@zentra/shared": "^1.0.7",
     "axios": "^1.8.4",
     "date-fns": "^4.1.0",
     "leaflet": "^1.9.4",

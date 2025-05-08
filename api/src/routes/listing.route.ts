@@ -4,6 +4,8 @@ import {
   deleteListing,
   getListing,
   getListings,
+  saveListing,
+  unsaveListing,
 } from "../controllers/listing.controller";
 import { verifyToken } from "../middlewares/verify-token";
 
@@ -15,5 +17,7 @@ router.get("/:id", getListing);
 router.post("/", verifyToken, addListing);
 // router.put("/:id");
 router.delete("/:id", verifyToken, deleteListing);
+router.post("/save", verifyToken, saveListing);
+router.delete("/save/:id", verifyToken, unsaveListing);
 
 export default router;

@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import {
   Amenity,
   ApiResponse,
+  GetListingsQuery,
   Listing,
   ListingDetail,
   ListingType,
@@ -17,15 +18,6 @@ import { ForbiddenError } from "../errors/forbidden-error";
 /// Typing request & query
 interface AuthenticatedRequest extends Request {
   userId: number;
-}
-
-interface GetListingsQuery {
-  city?: string;
-  type?: ListingType;
-  property?: PropertyType;
-  //   bedroom?: string;
-  minPrice?: string;
-  maxPrice?: string;
 }
 
 /// Handlers
@@ -80,6 +72,7 @@ export const getListings = async (
 ) => {
   // Get query data from request
   const query = req.query;
+  console.log("Get listings endpoint hit");
 
   // Fetch listings by query data
 
@@ -114,32 +107,60 @@ export const getListing = async (
   req: Request,
   res: Response<ApiResponse<Listing>>
 ) => {
+  console.log("Single listing endpoint hit");
   // Get id from request param
   const id = req.params.id;
+  let loginUserId;
+
+  // Get login user id if exists
+  if (req.session?.jwt) {
+    try {
+      const payload = jwt.verify(req.session.jwt, process.env.JWT_KEY!) as {
+        id: number;
+      };
+
+      loginUserId = payload.id;
+    } catch (e) {
+      loginUserId = null;
+    }
+  }
 
   // Find listing by id
-
-  const listing = (await prisma.listing.findUnique({
+  const listing = await prisma.listing.findUnique({
     where: { id },
     include: {
-      listingDetail: true,
+      listingDetail: {
+        include: {
+          amenities: true,
+          roomTypes: true,
+        },
+      },
       user: {
         select: {
           username: true,
           avatar: true,
         },
       },
+      savedListings: loginUserId
+        ? {
+            where: {
+              userId: loginUserId,
+            },
+          }
+        : false,
     },
-  })) as Listing;
-
-  // TODO: find isSaved relationship, add isSaved data field
-  ////////
+  });
 
   // Throw error for not found
   if (!listing) throw new NotFoundError();
 
+  // Add isSaved data field
+  const isSaved = listing.savedListings?.length > 0;
+
   // Send listing data as response
-  res.status(200).json({ success: true, data: listing });
+  res
+    .status(200)
+    .json({ success: true, data: { ...listing, isSaved } as Listing });
 };
 
 export const deleteListing = async (
@@ -169,4 +190,67 @@ export const deleteListing = async (
   });
 
   res.status(200).json({ success: true, message: "Listing deleted" });
+};
+
+export const saveListing = async (req: Request, res: Response<ApiResponse>) => {
+  // Get the listing data from request
+  const { listingId } = req.body;
+  const { userId } = req as AuthenticatedRequest;
+
+  if (!userId || !listingId)
+    res
+      .status(400)
+      .json({ success: false, message: "Missing userId or listingId" });
+
+  // Check if save relationship already exists
+  const existing = await prisma.savedListing.findUnique({
+    where: {
+      userId_listingId: {
+        userId,
+        listingId,
+      },
+    },
+  });
+
+  if (existing)
+    res.status(400).json({ success: false, message: "Listing already saved" });
+
+  // Create saved listing record
+  const saved = await prisma.savedListing.create({
+    data: {
+      userId,
+      listingId,
+    },
+  });
+
+  res.status(201).json({
+    success: true,
+    message: "Listing saved",
+    data: saved,
+  });
+};
+
+export const unsaveListing = async (
+  req: Request,
+  res: Response<ApiResponse>
+) => {
+  // Get the listing data from request
+  const listingId = req.params.id;
+  const { userId } = req as AuthenticatedRequest;
+
+  if (!userId || !listingId)
+    res
+      .status(400)
+      .json({ success: false, message: "Missing userId or listingId" });
+
+  await prisma.savedListing.delete({
+    where: {
+      userId_listingId: {
+        userId,
+        listingId,
+      },
+    },
+  });
+
+  res.status(200).json({ success: true, message: "Cancel save listing" });
 };

@@ -52,6 +52,8 @@ model Listing {
   longitude    String
   type         ListingType
   property     PropertyType
+  guestsMin    Int           @default(1)
+  guestsMax    Int           @default(1)
   createdAt    DateTime      @default(now())
 
   user         User          @relation(fields: [userId], references: [id])
@@ -67,6 +69,8 @@ model ListingDetail {
   utilities   String?
   pet         String?
   size        Int?
+  bedroom     Int         @default(1)
+  bathroom    Int         @default(1)
 
   amenities   Amenity[]   @relation("ListingAmenities")
   features    String[]

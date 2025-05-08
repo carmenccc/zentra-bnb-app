@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "Listing" ADD COLUMN     "guestsMax" INTEGER NOT NULL DEFAULT 1,
+ADD COLUMN     "guestsMin" INTEGER NOT NULL DEFAULT 1,
+ALTER COLUMN "createdAt" DROP DEFAULT;
+
+-- AlterTable
+ALTER TABLE "RoomType" ADD COLUMN     "amount" INTEGER NOT NULL DEFAULT 1;

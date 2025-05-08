@@ -5,23 +5,6 @@
   flex-direction: column;
   gap: 1rem;
 
-  h1 {
-    font-weight: 300;
-    font-size: 2rem;
-
-    b {
-      color: var(--Dark, #383838);
-      border-bottom: solid 3px $color-accent;
-
-      /* Header H6 M 20 */
-      font-family: Geller;
-      font-size: 2.4rem;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 100%; /* 20px */
-    }
-  }
-
   .item {
     display: flex;
     flex-direction: column;

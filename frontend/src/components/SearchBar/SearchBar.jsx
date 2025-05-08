@@ -20,11 +20,11 @@ export const SearchBar = () => {
     setQuery((prev) => ({ ...prev, type: val }));
   };
 
-  const handleCityChange = (val) => {
-    setQuery((prev) => ({ ...prev, city: val }));
+  const handleCityChange = (e) => {
+    setQuery((prev) => ({ ...prev, city: e.target.value }));
   };
-  const handleGuestsChange = (val) => {
-    setQuery((prev) => ({ ...prev, guests: val }));
+  const handleGuestsChange = (e) => {
+    setQuery((prev) => ({ ...prev, guests: e.target.value }));
   };
 
   const handleDateChange = (dates) => {

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./Slider.scss";
 
-export const Slider = ({ images }) => {
+export const Slider = ({ images, saved, handleSave }) => {
   const [imageIndex, setImageIndex] = useState(null);
-  const [saved, setSaved] = useState(false);
+  // const [saved, setSaved] = useState(isSaved || false);
   const changeSlide = (direction) => {
     if (direction === "left") {
       if (imageIndex === 0) {
@@ -18,10 +18,6 @@ export const Slider = ({ images }) => {
         setImageIndex(imageIndex + 1);
       }
     }
-  };
-
-  const handleSave = () => {
-    setSaved((prev) => !prev);
   };
 
   return (

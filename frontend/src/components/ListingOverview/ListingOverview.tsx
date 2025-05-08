@@ -1,12 +1,13 @@
+import { Amenity, RoomType } from "@zentra/shared";
 import "./ListingOverview.scss";
 
 import React, { useMemo } from "react";
 
 interface ListingOverviewProps {
   description: string;
-  amenities: number[];
-  features: string[];
-  roomTypes: string[];
+  amenities?: Amenity[];
+  features?: string[];
+  roomTypes?: RoomType[];
 }
 
 type AmenityType = { id: number; name: string; icon: string };
@@ -46,10 +47,10 @@ export const ListingOverview: React.FC<ListingOverviewProps> = ({
         <div className="feature-section">
           <p className="title">Amenities</p>
           <div className="grid-2-col">
-            {amenities.map((amenity) => (
-              <div className="tag" key={amenitiesMap[amenity].name}>
-                <img src={amenitiesMap[amenity].icon} alt="" />
-                <span>{amenitiesMap[amenity].name}</span>
+            {amenities?.map((amenity) => (
+              <div className="tag" key={amenitiesMap[amenity.id].name}>
+                <img src={amenitiesMap[amenity.id].icon} alt="" />
+                <span>{amenitiesMap[amenity.id].name}</span>
               </div>
             ))}
           </div>
@@ -58,7 +59,7 @@ export const ListingOverview: React.FC<ListingOverviewProps> = ({
         <div className="feature-section">
           <p className="title">Features</p>
           <div className="grid-2-col">
-            {features.map((feature) => (
+            {features?.map((feature) => (
               <div className="tag" key={feature}>
                 <img src="/icons/checkmark.svg" alt="" />
                 <span>{feature}</span>
@@ -70,10 +71,10 @@ export const ListingOverview: React.FC<ListingOverviewProps> = ({
         <div className="feature-section">
           <p className="title">Room Type</p>
           <div className="list-vertical">
-            {roomTypes.map((roomType) => (
-              <div className="tag" key={roomType}>
+            {roomTypes?.map((roomType) => (
+              <div className="tag" key={roomType.id}>
                 <img src="/icons/bed.svg" alt="" />
-                <span>{roomType}</span>
+                <span>{roomType.name}</span>
               </div>
             ))}
           </div>
