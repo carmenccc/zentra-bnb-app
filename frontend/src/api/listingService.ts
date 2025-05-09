@@ -9,17 +9,11 @@ type ListingResponse = Listing;
 export const fetchListings = async (
   params?: GetListingsQuery
 ): Promise<ListingsResponse> => {
-  // try {
-  console.log("Fetching data");
   const res = await axios.get<ApiResponse<ListingsResponse>>(`${API_BASE}/`, {
     params,
   });
-  console.log(res.data.data);
+
   return res.data.data || [];
-  // } catch (err) {
-  //   console.log(err);
-  //   return [];
-  // }
 };
 
 export const fetchSingleListing = async (
@@ -29,7 +23,6 @@ export const fetchSingleListing = async (
     `${API_BASE}/${id}`
   );
 
-  console.log(res.data);
   // TEMP
   return res.data.data!;
 };

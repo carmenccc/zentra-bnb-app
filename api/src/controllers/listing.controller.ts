@@ -14,11 +14,14 @@ import {
 import { NotFoundError } from "../errors/not-found-error";
 import { ServerError } from "../errors/server-error";
 import { ForbiddenError } from "../errors/forbidden-error";
+import { getCurrentUser } from "./auth.controller";
+import { AuthenticatedRequest } from "src/middlewares/verify-token";
+import { eachDayOfInterval } from "date-fns";
 
 /// Typing request & query
-interface AuthenticatedRequest extends Request {
-  userId: number;
-}
+// interface AuthenticatedRequest extends Request {
+//   userId: number;
+// }
 
 /// Handlers
 export const addListing = async (
@@ -72,10 +75,8 @@ export const getListings = async (
 ) => {
   // Get query data from request
   const query = req.query;
-  console.log("Get listings endpoint hit");
 
   // Fetch listings by query data
-
   const listings = (await prisma.listing.findMany({
     // conditions
     where: {
@@ -107,7 +108,6 @@ export const getListing = async (
   req: Request,
   res: Response<ApiResponse<Listing>>
 ) => {
-  console.log("Single listing endpoint hit");
   // Get id from request param
   const id = req.params.id;
   let loginUserId;
@@ -157,10 +157,27 @@ export const getListing = async (
   // Add isSaved data field
   const isSaved = listing.savedListings?.length > 0;
 
+  // Query for reserved dates and add to response
+  const reservations = await prisma.reservation.findMany({
+    where: { listingId: id },
+    select: {
+      startDate: true,
+      endDate: true,
+    },
+  });
+
+  const disabledDates = reservations.flatMap((el) =>
+    eachDayOfInterval({
+      start: el.startDate,
+      end: el.endDate,
+    })
+  );
+
   // Send listing data as response
-  res
-    .status(200)
-    .json({ success: true, data: { ...listing, isSaved } as Listing });
+  res.status(200).json({
+    success: true,
+    data: { ...listing, isSaved, disabledDates } as Listing,
+  });
 };
 
 export const deleteListing = async (
@@ -197,10 +214,12 @@ export const saveListing = async (req: Request, res: Response<ApiResponse>) => {
   const { listingId } = req.body;
   const { userId } = req as AuthenticatedRequest;
 
-  if (!userId || !listingId)
+  if (!userId || !listingId) {
     res
       .status(400)
       .json({ success: false, message: "Missing userId or listingId" });
+    return;
+  }
 
   // Check if save relationship already exists
   const existing = await prisma.savedListing.findUnique({
@@ -212,8 +231,10 @@ export const saveListing = async (req: Request, res: Response<ApiResponse>) => {
     },
   });
 
-  if (existing)
+  if (existing) {
     res.status(400).json({ success: false, message: "Listing already saved" });
+    return;
+  }
 
   // Create saved listing record
   const saved = await prisma.savedListing.create({
@@ -238,10 +259,12 @@ export const unsaveListing = async (
   const listingId = req.params.id;
   const { userId } = req as AuthenticatedRequest;
 
-  if (!userId || !listingId)
+  if (!userId || !listingId) {
     res
       .status(400)
       .json({ success: false, message: "Missing userId or listingId" });
+    return;
+  }
 
   await prisma.savedListing.delete({
     where: {

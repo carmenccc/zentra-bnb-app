@@ -6,34 +6,59 @@ import { ListingReservation } from "../../components/ListingReservation/ListingR
 import { ListingOverview } from "../../components/ListingOverview/ListingOverview";
 import { useEffect, useState } from "react";
 import { Range } from "react-date-range";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   fetchSingleListing,
   saveListing,
   unsaveListing,
 } from "../../api/listingService";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
+import { createReservation } from "../../api/reservationService";
+import { AxiosError } from "axios";
 
-const mockDisabledDates = [
-  new Date("2025-05-10"),
-  new Date("2025-05-11"),
-  new Date("2025-05-20"),
-];
-
-const initialDateRange: Range = {
-  startDate: new Date("2025-05-02"),
-  endDate: new Date("2025-05-05"),
-  key: "selection",
+type NullableRange = {
+  startDate?: Date;
+  endDate?: Date;
+  key: string;
 };
 
 export const SinglePage = () => {
+  // Data fetching
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const query = Object.fromEntries(searchParams.entries());
+  console.log(query);
+
+  const initialDateRange: Range = {
+    startDate: new Date(query.checkInDate || ""),
+    endDate: new Date(query.checkOutDate || ""),
+    key: "selection",
+  };
+
+  const queryClient = useQueryClient();
   const { data, isLoading, error } = useQuery({
-    queryKey: ["listing", id],
+    queryKey: ["listing"],
     queryFn: () => fetchSingleListing(id || ""),
   });
+  const reservationMutation = useMutation({
+    mutationFn: createReservation,
+    onSuccess(data, variables, context) {
+      queryClient.invalidateQueries({ queryKey: ["listing"] });
+      alert("Reservation successful!");
+    },
+    onError: (error) => {
+      console.log(error);
+      if ((error as AxiosError).status == 401)
+        alert("Please login to make reservation.");
+      else alert("Reservation failed.");
+    },
+  });
+
+  // State variables
   const [saved, setSaved] = useState(data?.isSaved);
+  // const [guests, setGuests] = useState(query.guests || 1);
   const [selectedDates, setSelectedDates] = useState(initialDateRange);
+  const [totalPrice, settotalPrice] = useState(0);
 
   useEffect(() => {
     if (data?.isSaved !== undefined) {
@@ -41,26 +66,11 @@ export const SinglePage = () => {
     }
   }, [data?.isSaved]);
 
-  console.log(error);
+  if (error) return <p>Something went wrong...</p>;
 
   if (isLoading) return <p>Loading...</p>;
 
   if (!data) return <p>No listing found</p>;
-
-  const handleSave = async () => {
-    console.log(saved);
-    let res;
-
-    if (!saved) {
-      console.log("saving");
-      res = await saveListing(data.id);
-      if (res.success) setSaved(true);
-    } else {
-      console.log("unsaving");
-      res = await unsaveListing(data.id);
-      if (res.success) setSaved(false);
-    }
-  };
 
   const tabs = [
     {
@@ -80,6 +90,36 @@ export const SinglePage = () => {
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo doloribus sint maiores, facere maxime dolores dicta rerum nobis non aliquam possimus doloremque eius et ut in laborum itaque odio molestias.",
     },
   ];
+
+  // Event handlers
+  const handleSave = async () => {
+    let res;
+
+    if (!saved) {
+      console.log("saving");
+      res = await saveListing(data.id);
+      if (res.success) setSaved(true);
+    } else {
+      console.log("unsaving");
+      res = await unsaveListing(data.id);
+      if (res.success) setSaved(false);
+    }
+  };
+
+  const handleReserve = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Verify is user is logged in
+    if (!id || !selectedDates.startDate || !selectedDates.endDate) return;
+    console.log("mutating");
+
+    reservationMutation.mutate({
+      listingId: id!,
+      startDate: selectedDates.startDate!,
+      endDate: selectedDates.endDate!,
+      totalPrice: totalPrice,
+    });
+  };
 
   return (
     <div className="singlePage">
@@ -169,7 +209,8 @@ export const SinglePage = () => {
             price={100}
             dateRange={selectedDates}
             onChangeDate={setSelectedDates}
-            disabledDates={mockDisabledDates}
+            disabledDates={data.disabledDates}
+            onSubmit={handleReserve}
           />
           <button className="btn-chat">Chat with Owner</button>
 

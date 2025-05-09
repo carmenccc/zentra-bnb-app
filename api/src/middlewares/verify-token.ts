@@ -3,6 +3,10 @@ import jwt from "jsonwebtoken";
 import { ForbiddenError } from "../errors/forbidden-error";
 import { UnauthorizedError } from "../errors/unauthorized-error";
 
+export interface AuthenticatedRequest extends Request {
+  userId: number;
+}
+
 export const verifyToken = (
   req: Request,
   res: Response,
@@ -17,7 +21,7 @@ export const verifyToken = (
       id: number;
     };
 
-    (req as Request & { userId: number }).userId = payload.id;
+    (req as AuthenticatedRequest).userId = payload.id;
 
     next();
   } catch (err) {

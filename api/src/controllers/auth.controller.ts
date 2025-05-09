@@ -59,6 +59,7 @@ export const register = async (
     res
       .status(200)
       .json({ success: false, errors: [{ message: "Email in use" }] });
+    return;
   }
 
   // Hash password
@@ -108,6 +109,7 @@ export const login = async (req: Request, res: Response<ApiResponse<null>>) => {
     res
       .status(200)
       .json({ success: false, errors: [{ message: "Invalid credentials" }] });
+    return;
   }
 
   // Generate JWT

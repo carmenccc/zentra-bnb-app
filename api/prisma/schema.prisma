@@ -26,6 +26,7 @@ model User {
 
   listings       Listing[]
   savedListings  SavedListing[]
+  reservations Reservation[]
 }
 
 enum ListingType {
@@ -61,6 +62,7 @@ model Listing {
 
   listingDetail ListingDetail?
   savedListings SavedListing[]
+  reservations Reservation[]
 }
 
 model ListingDetail {
@@ -78,6 +80,19 @@ model ListingDetail {
 
   listing     Listing     @relation(fields: [listingId], references: [id], onDelete: Cascade)
   listingId   String      @unique
+}
+
+model Reservation {
+  id String @id @default(uuid()) @map("_id")
+  userId Int
+  listingId String
+  startDate DateTime
+  endDate DateTime
+  totalPrice Float
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  listing Listing @relation(fields: [listingId], references: [id])
 }
 
 model SavedListing {
@@ -104,3 +119,4 @@ model RoomType {
   icon      String
   listings  ListingDetail[]  @relation("ListingRoomTypes")
 }
+

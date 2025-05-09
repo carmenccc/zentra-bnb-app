@@ -82,7 +82,17 @@ export const SearchBar = () => {
         </div>
         <div className="btnSearch">
           <Link
-            to={`/list?type=${query.type}&city=${query.city}&guests=${query.guests}`}
+            to={
+              {
+                pathname: `/list`,
+                search: `?${new URLSearchParams(query).toString()}`,
+              }
+              //   `/list?type=${query.type}&city=${query.city}&guests=${
+              //   query.guests
+              // }&startDate=${
+              //   query.checkInDate.toISOString().split("T")[0]
+              // }&endDate=${query.checkOutDate.toISOString().split("T")[0]}`
+            }
           >
             <button>
               <img src="/search.png" alt="" />

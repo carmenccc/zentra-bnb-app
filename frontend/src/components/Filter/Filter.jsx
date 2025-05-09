@@ -5,7 +5,7 @@ import DatePicker from "react-datepicker";
 import { addDays } from "date-fns";
 
 export const Filter = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [query, setQuery] = useState({
     type: searchParams.get("type") || "",
     city: searchParams.get("city") || "",
@@ -114,7 +114,13 @@ export const Filter = () => {
         </div>*/}
 
         <Link
-          to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`}
+          to={
+            {
+              pathname: `/list`,
+              search: `?${new URLSearchParams(query).toString()}`,
+            }
+            // `/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`
+          }
         >
           <button>
             <img src="/search.png" alt="" />

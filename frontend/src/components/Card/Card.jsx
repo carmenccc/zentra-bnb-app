@@ -1,15 +1,29 @@
 import "./Card.scss";
 import { Link } from "react-router-dom";
 
-export const Card = ({ item }) => {
+export const Card = ({ item, query }) => {
+  console.log(query);
   return (
     <div className="card">
-      <Link to={`/${item.id}`} className="imageContainer">
+      <Link
+        to={{
+          pathname: `/${item.id}`,
+          search: `?${new URLSearchParams(query).toString()}`,
+        }}
+        className="imageContainer"
+      >
         <img src={item.images[0]} alt="" />
       </Link>
       <div className="textContainer">
         <h2 className="title">
-          <Link to={`/${item.id}`}>{item.title}</Link>
+          <Link
+            to={{
+              pathname: `/${item.id}`,
+              search: `?${new URLSearchParams(query).toString()}`,
+            }}
+          >
+            {item.title}
+          </Link>
         </h2>
         <p className="address">
           <img src="/pin.png" alt="" />

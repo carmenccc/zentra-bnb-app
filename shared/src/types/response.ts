@@ -20,3 +20,10 @@ export interface GetListingsQuery {
   minPrice?: string;
   maxPrice?: string;
 }
+
+export interface CreateReservationParams {
+  listingId: string;
+  startDate: Date;
+  endDate: Date;
+  totalPrice: number;
+}

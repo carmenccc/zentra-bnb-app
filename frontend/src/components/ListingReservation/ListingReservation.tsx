@@ -7,12 +7,12 @@ import { useMemo, useState } from "react";
 
 interface ListingReservationProps {
   price: number;
-  dateRange: Range;
+  dateRange?: Range;
   //   totalPrice: number;
   onChangeDate: (value: Range) => void;
-  //   onSubmit: () => void;
+  onSubmit: (e: React.FormEvent) => Promise<void>;
   //   disabled?: boolean;
-  disabledDates: Date[];
+  disabledDates?: Date[];
 }
 
 export const ListingReservation: React.FC<ListingReservationProps> = ({
@@ -20,7 +20,7 @@ export const ListingReservation: React.FC<ListingReservationProps> = ({
   dateRange,
   //   totalPrice,
   onChangeDate,
-  //   onSubmit,
+  onSubmit,
   //   disabled,
   disabledDates,
 }) => {
@@ -31,34 +31,37 @@ export const ListingReservation: React.FC<ListingReservationProps> = ({
 
   return (
     <div className="reservation-container">
-      <Calendar
-        value={dateRange}
-        disabledDates={disabledDates}
-        // onChange={(value) => onChangeDate(value.selection)}
-        onChange={onChangeDate}
-      />
-      <form action="">
-        <div className="form-group">
-          <input
-            type="number"
-            name="guest"
-            id="guest"
-            value={guests || 1}
-            onChange={(e) => setGuests(Number(e.target.value))}
+      {!disabledDates ? (
+        <p>Error loading availability calendar...</p>
+      ) : (
+        <>
+          <Calendar
+            value={dateRange}
+            disabledDates={disabledDates}
+            onChange={onChangeDate}
           />
-          <label>Guests</label>
-        </div>
+          <form action="" onSubmit={(e) => onSubmit(e)}>
+            <div className="form-group">
+              <input
+                type="number"
+                name="guest"
+                id="guest"
+                value={guests || 1}
+                onChange={(e) => setGuests(Number(e.target.value))}
+              />
+              <label>Guests</label>
+            </div>
 
-        <div className="price">
-          $<span>{pricePerNight}</span> / night
-        </div>
+            <div className="price">
+              $<span>{pricePerNight}</span> / night
+            </div>
 
-        <div className="btn-book">
-          <Link to="">
-            <button>Reserve</button>
-          </Link>
-        </div>
-      </form>
+            <div className="btn-book">
+              <button type="submit">Reserve</button>
+            </div>
+          </form>
+        </>
+      )}
     </div>
   );
 };

@@ -25,6 +25,7 @@ export type Listing = {
   listingDetail?: ListingDetail;
   user?: { username: string; avatar: string | null };
   isSaved: boolean;
+  disabledDates?: Date[];
 };
 
 export enum ListingType {
@@ -64,4 +65,17 @@ export type RoomType = {
   id: number;
   name: string;
   icon: string;
+};
+
+export type Reservation = {
+  id: string;
+  userId: number;
+  listingId: string;
+  startDate: Date;
+  endDate: Date;
+  totalPrice: number;
+  createdAt: Date;
+
+  user?: UserData;
+  listing?: Listing;
 };

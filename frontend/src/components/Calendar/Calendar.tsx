@@ -4,7 +4,7 @@ import "react-date-range/dist/styles.css"; // main style
 import "react-date-range/dist/theme/default.css"; // theme style
 
 interface CalendarProps {
-  value: Range;
+  value?: Range;
   onChange: (value: Range) => void;
   disabledDates?: Date[];
 }
@@ -22,7 +22,8 @@ export const Calendar: React.FC<CalendarProps> = ({
     <div className="calendar-container">
       <DateRange
         rangeColors={["#262626"]}
-        ranges={[value]}
+        // ranges={[]}
+        ranges={value ? [value] : []}
         date={new Date()}
         onChange={handleChange}
         direction="vertical"
