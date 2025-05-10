@@ -14,7 +14,7 @@ export const ListPage = () => {
   console.log(query);
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["listings"],
+    queryKey: ["listings", query],
     queryFn: () => fetchListings(query),
   });
 

@@ -10,8 +10,8 @@ export const Filter = () => {
     type: searchParams.get("type") || "",
     city: searchParams.get("city") || "",
     guests: searchParams.get("guests") || null,
-    checkInDate: searchParams.get("checkInDate") || new Date(),
-    checkOutDate: searchParams.get("checkOutDate") || addDays(new Date(), 1),
+    startDate: searchParams.get("startDate") || new Date(),
+    endDate: searchParams.get("endDate") || addDays(new Date(), 1),
     property: searchParams.get("property") || "",
     minPrice: null,
     maxPrice: null,
@@ -22,8 +22,8 @@ export const Filter = () => {
 
     setQuery((prev) => ({
       ...prev,
-      checkInDate: start,
-      checkOutDate: end,
+      startDate: start,
+      endDate: end,
     }));
   };
 
@@ -50,6 +50,9 @@ export const Filter = () => {
             id="city"
             value={query.city}
             placeholder="City Location"
+            onChange={(e) =>
+              setQuery((prev) => ({ ...prev, city: e.target.value }))
+            }
           />
         </div>
         <div className="item">
@@ -69,6 +72,9 @@ export const Filter = () => {
             id="guests"
             value={query.guests}
             placeholder="any"
+            onChange={(e) =>
+              setQuery((prev) => ({ ...prev, guests: e.target.value }))
+            }
           />
         </div>
 
@@ -76,8 +82,8 @@ export const Filter = () => {
           <label>Checkin Date</label>
           <DatePicker
             selectsRange
-            startDate={query.checkInDate}
-            endDate={query.checkOutDate}
+            startDate={query.startDate}
+            endDate={query.endDate}
             minDate={new Date()}
             onChange={handleDateChange}
           />
@@ -114,13 +120,10 @@ export const Filter = () => {
         </div>*/}
 
         <Link
-          to={
-            {
-              pathname: `/list`,
-              search: `?${new URLSearchParams(query).toString()}`,
-            }
-            // `/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`
-          }
+          to={{
+            pathname: `/list`,
+            search: `?${new URLSearchParams(query).toString()}`,
+          }}
         >
           <button>
             <img src="/search.png" alt="" />

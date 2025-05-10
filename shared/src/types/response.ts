@@ -19,6 +19,9 @@ export interface GetListingsQuery {
   //   bedroom?: string;
   minPrice?: string;
   maxPrice?: string;
+  guests?: string;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export interface CreateReservationParams {

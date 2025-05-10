@@ -38,18 +38,18 @@ export const Card = ({ item, query }) => {
               <span>{item.bedroom} bedroom</span>
             </div>
             <div className="feature">
-              <img src="/bath.png" alt="" />
+              <img src="/icons/bath.png" alt="" />
               <span>{item.bathroom} bathroom</span>
             </div>
           </div>
-          <div className="icons">
+          {/* <div className="icons">
             <div className="icon">
               <img src="/icons/save.png" alt="" />
             </div>
             <div className="icon">
               <img src="/icons/chat.png" alt="" />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

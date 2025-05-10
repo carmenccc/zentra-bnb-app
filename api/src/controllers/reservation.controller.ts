@@ -4,6 +4,7 @@ import prisma from "../utils/prisma-client";
 import { AuthenticatedRequest } from "../middlewares/verify-token";
 import { NotFoundError } from "../errors/not-found-error";
 import { UnauthorizedError } from "../errors/unauthorized-error";
+import { eachDayOfInterval } from "date-fns";
 
 export const createReservation = async (
   req: Request,
@@ -51,6 +52,37 @@ export const createReservation = async (
       totalPrice,
     },
   });
+
+  // Update listing with new disabled date range
+  const listing = await prisma.listing.findUnique({
+    where: { id: listingId },
+    select: { disabledDates: true },
+  });
+
+  const reservedDates = eachDayOfInterval({
+    start: startDate,
+    end: endDate,
+  });
+
+  try {
+    await prisma.listing.update({
+      where: { id: listingId },
+      data: {
+        disabledDates: reservedDates,
+      },
+    });
+  } catch (err) {
+    // If listing update failed, roll back and delete the created reservation
+    await prisma.reservation.delete({
+      where: {
+        id: reservation.id,
+      },
+    });
+    res
+      .status(400)
+      .send({ success: false, message: "Updating listing data failed" });
+    return;
+  }
 
   res
     .status(201)

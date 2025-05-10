@@ -19,6 +19,8 @@ export type Listing = {
   property: PropertyType;
   guestsMin: number;
   guestsMax: number;
+  bedroom: number;
+  bathroom: number;
 
   createdAt: Date;
   userId: number;
@@ -47,8 +49,7 @@ export type ListingDetail = {
   utilities?: string;
   pet?: string;
   size?: number;
-  bedroom: number;
-  bathroom: number;
+
   amenities?: Amenity[];
   features?: string[];
   roomTypes?: RoomType[];

@@ -14,6 +14,8 @@ export const Calendar: React.FC<CalendarProps> = ({
   onChange,
   disabledDates,
 }) => {
+  console.log(disabledDates);
+  console.log(value);
   const handleChange = (ranges: RangeKeyDict) => {
     onChange(ranges.selection);
   };
@@ -22,7 +24,6 @@ export const Calendar: React.FC<CalendarProps> = ({
     <div className="calendar-container">
       <DateRange
         rangeColors={["#262626"]}
-        // ranges={[]}
         ranges={value ? [value] : []}
         date={new Date()}
         onChange={handleChange}

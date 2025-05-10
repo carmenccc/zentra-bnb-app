@@ -15,6 +15,7 @@ import {
 import { useParams, useSearchParams } from "react-router-dom";
 import { createReservation } from "../../api/reservationService";
 import { AxiosError } from "axios";
+import { eachDayOfInterval } from "date-fns";
 
 type NullableRange = {
   startDate?: Date;
@@ -23,23 +24,27 @@ type NullableRange = {
 };
 
 export const SinglePage = () => {
-  // Data fetching
+  // Fetching query data
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const query = Object.fromEntries(searchParams.entries());
   console.log(query);
 
-  const initialDateRange: Range = {
-    startDate: new Date(query.checkInDate || ""),
-    endDate: new Date(query.checkOutDate || ""),
-    key: "selection",
-  };
-
+  // Fetching single listing data
   const queryClient = useQueryClient();
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["listing"],
     queryFn: () => fetchSingleListing(id || ""),
   });
+
+  const initialDateRange: Range = {
+    startDate: query.startDate ? new Date(query.startDate) : new Date(),
+    endDate: query.endDate ? new Date(query.endDate) : new Date(),
+    key: "selection",
+  };
+
+  // Defining reservation mutation
   const reservationMutation = useMutation({
     mutationFn: createReservation,
     onSuccess(data, variables, context) {
@@ -209,59 +214,10 @@ export const SinglePage = () => {
             price={100}
             dateRange={selectedDates}
             onChangeDate={setSelectedDates}
-            disabledDates={data.disabledDates}
+            disabledDates={data.disabledDates || []}
             onSubmit={handleReserve}
           />
           <button className="btn-chat">Chat with Owner</button>
-
-          {/* Room size */}
-          {/* <p className="title">Room Sizes</p>
-          <div className="sizes">
-            <div className="size">
-              <img src="/size.png" alt="" />
-              <span>80 sqft</span>
-            </div>
-            <div className="size">
-              <img src="/bed.png" alt="" />
-              <span>2 beds</span>
-            </div>
-            <div className="size">
-              <img src="/bath.png" alt="" />
-              <span>1 bathroom</span>
-            </div>
-          </div> */}
-          {/* General featrues */}
-          {/* <p className="title">General</p>
-          <div className="listVertical">
-            <div className="feature">
-              <img src="/icons/ic.svg" alt="" />
-
-              <div className="featureText">
-                <span>Service</span>
-                <p>Owner is responsible</p>
-              </div>
-            </div>
-            <div className="feature">
-              <img src="/pet.png" alt="" />
-              <div className="featureText">
-                <span>Pet Policy</span>
-                <p>Pets Allowed</p>
-              </div>
-            </div>
-            <div className="feature">
-              <img src="/fee.png" alt="" />
-              <div className="featureText">
-                <span>Property Fees</span>
-                <p>Must have 3x the rent in total household income</p>
-              </div>
-            </div>
-          </div> */}
-
-          {/* <ListingReservation
-            dateRange={data.dateRange}
-            // onChangeDate={() => {}}
-            disabledDates={data.disabledDates}
-          /> */}
         </div>
       </div>
     </div>

@@ -55,7 +55,11 @@ model Listing {
   property     PropertyType
   guestsMin    Int           @default(1)
   guestsMax    Int           @default(1)
+  bedroom     Int         @default(1)
+  bathroom    Int         @default(1)
   createdAt    DateTime      @default(now())
+
+  disabledDates DateTime[] // Store an array of date ranges
 
   user         User          @relation(fields: [userId], references: [id])
   userId       Int
@@ -71,8 +75,7 @@ model ListingDetail {
   utilities   String?
   pet         String?
   size        Int?
-  bedroom     Int         @default(1)
-  bathroom    Int         @default(1)
+  
 
   amenities   Amenity[]   @relation("ListingAmenities")
   features    String[]

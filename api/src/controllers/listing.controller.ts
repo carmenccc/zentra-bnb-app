@@ -18,11 +18,6 @@ import { getCurrentUser } from "./auth.controller";
 import { AuthenticatedRequest } from "src/middlewares/verify-token";
 import { eachDayOfInterval } from "date-fns";
 
-/// Typing request & query
-// interface AuthenticatedRequest extends Request {
-//   userId: number;
-// }
-
 /// Handlers
 export const addListing = async (
   req: Request,
@@ -33,8 +28,7 @@ export const addListing = async (
   const { userId } = req as AuthenticatedRequest;
 
   // Create the new listing database, along with the listing detail
-
-  const newListing = (await prisma.listing.create({
+  const newListing = await prisma.listing.create({
     data: {
       ...body.listing,
       userId: userId,
@@ -57,7 +51,7 @@ export const addListing = async (
     include: {
       listingDetail: true,
     },
-  })) as Listing;
+  });
 
   if (!newListing) throw new ServerError("Failed to create listing");
 
@@ -65,7 +59,7 @@ export const addListing = async (
   res.status(201).json({
     success: true,
     message: `${newListing.id} created!`,
-    data: newListing,
+    data: { ...newListing, isSaved: false } as Listing,
   });
 };
 
@@ -75,6 +69,8 @@ export const getListings = async (
 ) => {
   // Get query data from request
   const query = req.query;
+
+  console.log(query);
 
   // Fetch listings by query data
   const listings = (await prisma.listing.findMany({
@@ -89,10 +85,50 @@ export const getListings = async (
       type: query.type || undefined,
       property: query.property || undefined,
       // bedroom: parseInt(query.bedroom || "1"),
+      ...(query.guests
+        ? {
+            guestsMin: {
+              lte: parseInt(query.guests) || undefined,
+            },
+            guestsMax: {
+              gte: parseInt(query.guests) || undefined,
+            },
+          }
+        : {}),
       price: {
         gte: parseInt(query.minPrice!) || undefined,
         lte: parseInt(query.maxPrice!) || undefined,
       },
+      // Check if listing has no disabledDates within the selected range
+      ...(query.startDate && query.endDate
+        ? {
+            OR: [
+              { disabledDates: { equals: null } },
+              {
+                NOT: {
+                  disabledDates: {
+                    hasSome: eachDayOfInterval({
+                      start: query.startDate,
+                      end: query.endDate,
+                    }),
+                  },
+                },
+              },
+            ],
+          }
+        : {}),
+      // ...(query.startDate && query.endDate
+      //   ? {
+      //       NOT: {
+      //         disabledDates: {
+      //           hasSome: eachDayOfInterval({
+      //             start: query.startDate,
+      //             end: query.endDate,
+      //           }),
+      //         },
+      //       },
+      //     }
+      //   : {}),
     },
   })) as Listing[];
 
@@ -157,26 +193,13 @@ export const getListing = async (
   // Add isSaved data field
   const isSaved = listing.savedListings?.length > 0;
 
-  // Query for reserved dates and add to response
-  const reservations = await prisma.reservation.findMany({
-    where: { listingId: id },
-    select: {
-      startDate: true,
-      endDate: true,
-    },
-  });
-
-  const disabledDates = reservations.flatMap((el) =>
-    eachDayOfInterval({
-      start: el.startDate,
-      end: el.endDate,
-    })
-  );
-
   // Send listing data as response
   res.status(200).json({
     success: true,
-    data: { ...listing, isSaved, disabledDates } as Listing,
+    data: {
+      ...listing,
+      isSaved,
+    } as Listing,
   });
 };
 

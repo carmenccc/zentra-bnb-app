@@ -9,6 +9,7 @@ type ListingResponse = Listing;
 export const fetchListings = async (
   params?: GetListingsQuery
 ): Promise<ListingsResponse> => {
+  console.log(params);
   const res = await axios.get<ApiResponse<ListingsResponse>>(`${API_BASE}/`, {
     params,
   });

@@ -11,8 +11,8 @@ export const SearchBar = () => {
   const [query, setQuery] = useState({
     type: "stay",
     city: "London",
-    checkInDate: new Date(),
-    checkOutDate: addDays(new Date(), 3),
+    startDate: new Date(),
+    endDate: addDays(new Date(), 3),
     guests: "",
   });
 
@@ -32,8 +32,8 @@ export const SearchBar = () => {
 
     setQuery((prev) => ({
       ...prev,
-      checkInDate: start,
-      checkOutDate: end,
+      startDate: start,
+      endDate: end,
     }));
   };
 
@@ -64,8 +64,8 @@ export const SearchBar = () => {
           <label>Checkin Date</label>
           <DatePicker
             selectsRange
-            startDate={query.checkInDate}
-            endDate={query.checkOutDate}
+            startDate={query.startDate}
+            endDate={query.endDate}
             minDate={new Date()}
             onChange={handleDateChange}
           />
