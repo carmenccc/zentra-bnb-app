@@ -1,4 +1,5 @@
 @use "../../responsive.scss" as *;
+@use "../../theme.scss" as *;
 
 .profilePage {
   display: flex;
@@ -55,6 +56,16 @@
           gap: 2rem;
         }
 
+        button {
+          width: 100px;
+          background-color: teal;
+          border: none;
+          color: white;
+          padding: 10px 20px;
+          cursor: pointer;
+          border-radius: 5px;
+        }
+
         img {
           width: 5rem;
           height: 5rem;
@@ -67,7 +78,7 @@
 
   .chatContainer {
     flex: 2;
-    background-color: #fcf5f3;
+    background-color: rgba(238, 231, 244, 0.692);
     height: 100%;
 
     @include md {

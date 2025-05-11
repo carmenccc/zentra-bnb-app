@@ -3,7 +3,7 @@ import { Layout } from "./routes/Layout/Layout";
 import { HomePage } from "./routes/homePage/homePage";
 import { ListPage } from "./routes/ListPage/ListPage";
 import { SinglePage } from "./routes/SinglePage/SinglePage.tsx";
-import { ProfilePage } from "./routes/ProfilePage/ProfilePage";
+import { ProfilePage } from "./routes/ProfilePage/ProfilePage.tsx";
 import { Login } from "./routes/Login/Login";
 import { Register } from "./routes/Register/Register";
 

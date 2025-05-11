@@ -4,10 +4,27 @@ import { List } from "../../components/List/List";
 import { useAuth } from "../../context/AuthContext";
 import "./ProfilePage.scss";
 import { logout } from "../../api/auth";
+import { useQueries } from "@tanstack/react-query";
+import { fetchSavedListings, fetchUserListings } from "../../api/userService";
 
 export const ProfilePage = () => {
   const { updateUser, currentUser } = useAuth();
   const navigate = useNavigate();
+
+  const userData = useQueries({
+    queries: [
+      {
+        queryKey: ["userListings"],
+        queryFn: fetchUserListings,
+      },
+      {
+        queryKey: ["savedListings"],
+        queryFn: fetchSavedListings,
+      },
+    ],
+  });
+  console.log(userData);
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -46,12 +63,20 @@ export const ProfilePage = () => {
             <h1>My List</h1>
             <button>Create New Post</button>
           </div>
-          {/* <List /> */}
+          {userData[0]?.data ? (
+            <List listData={userData[0]?.data || []} />
+          ) : (
+            <p>Not listing by user</p>
+          )}
           {/* Saved list */}
           <div className="title">
             <h1>Saved List</h1>
           </div>
-          {/* <List /> */}
+          {userData[1]?.data ? (
+            <List listData={userData[1]?.data || []} />
+          ) : (
+            <p>Not saved listing</p>
+          )}
         </div>
       </div>
 
