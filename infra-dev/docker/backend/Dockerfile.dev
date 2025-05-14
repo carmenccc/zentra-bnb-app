@@ -8,4 +8,7 @@ RUN npm install
 
 COPY api .
 
+# Run Prisma generate (now that schema.prisma is present)
+RUN npx prisma generate
+
 CMD ["npm", "run", "dev"]
