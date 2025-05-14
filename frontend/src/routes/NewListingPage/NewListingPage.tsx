@@ -88,6 +88,7 @@ export const NewListingPage = () => {
       console.log(res);
     } catch (e) {
       console.log(e);
+      alert("Invalid input");
     }
   };
 

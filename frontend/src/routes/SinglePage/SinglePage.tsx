@@ -28,7 +28,6 @@ export const SinglePage = () => {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const query = Object.fromEntries(searchParams.entries());
-  console.log(query);
 
   // Fetching single listing data
   const queryClient = useQueryClient();
@@ -101,11 +100,9 @@ export const SinglePage = () => {
     let res;
 
     if (!saved) {
-      console.log("saving");
       res = await saveListing(data.id!);
       if (res.success) setSaved(true);
     } else {
-      console.log("unsaving");
       res = await unsaveListing(data.id!);
       if (res.success) setSaved(false);
     }
@@ -116,7 +113,6 @@ export const SinglePage = () => {
 
     // Verify is user is logged in
     if (!id || !selectedDates.startDate || !selectedDates.endDate) return;
-    console.log("mutating");
 
     reservationMutation.mutate({
       listingId: id!,
