@@ -34,7 +34,9 @@ export const getSavedListings = async (
 
   if (!savedRecords) throw new NotFoundError();
 
-  const savedListings = savedRecords.map((r) => r.listing);
+  const savedListings = savedRecords.map(
+    (r: (typeof savedRecords)[number]) => r.listing
+  );
 
   res.status(200).json({ success: true, data: savedListings as Listing[] });
 };
