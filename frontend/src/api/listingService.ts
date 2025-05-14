@@ -1,4 +1,9 @@
-import { ApiResponse, GetListingsQuery, Listing } from "@zentra/shared";
+import {
+  ApiResponse,
+  CreateListingParams,
+  GetListingsQuery,
+  Listing,
+} from "@zentra/shared";
 import axios, { AxiosError } from "axios";
 
 const API_BASE = `/api/listing`;
@@ -49,4 +54,10 @@ export const unsaveListing = async (listingId: string) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const createListing = async (params: CreateListingParams) => {
+  const res = await axios.post(`${API_BASE}/`, params);
+
+  return res.data;
 };

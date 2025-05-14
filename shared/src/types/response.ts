@@ -24,6 +24,34 @@ export interface GetListingsQuery {
   endDate?: Date;
 }
 
+export interface CreateListingParams {
+  listing: {
+    title: string;
+    price: number;
+    images: string[];
+    address: string;
+    city: string;
+    latitude: string;
+    longitude: string;
+    type: ListingType;
+    property: PropertyType;
+    guestsMin: number;
+    guestsMax: number;
+    bedroom: number;
+    bathroom: number;
+  };
+  listingDetail: {
+    description: string;
+    utilities?: string;
+    pet?: string;
+    size?: number;
+
+    amenities?: { id: number }[];
+    features?: string[];
+    roomTypes?: { id: number }[];
+  };
+}
+
 export interface CreateReservationParams {
   listingId: string;
   startDate: Date;

@@ -7,7 +7,7 @@ export type UserData = {
 };
 
 export type Listing = {
-  id: string;
+  id?: string;
   title: string;
   price: number;
   images: string[];
@@ -22,11 +22,11 @@ export type Listing = {
   bedroom: number;
   bathroom: number;
 
-  createdAt: Date;
-  userId: number;
+  createdAt?: Date;
+  userId?: number;
   listingDetail?: ListingDetail;
   user?: { username: string; avatar: string | null };
-  isSaved: boolean;
+  isSaved?: boolean;
   disabledDates?: Date[];
 };
 
@@ -44,7 +44,7 @@ export enum PropertyType {
 }
 
 export type ListingDetail = {
-  id: string;
+  id?: string;
   description: string;
   utilities?: string;
   pet?: string;

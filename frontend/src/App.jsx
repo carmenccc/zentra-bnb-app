@@ -6,6 +6,7 @@ import { SinglePage } from "./routes/SinglePage/SinglePage.tsx";
 import { ProfilePage } from "./routes/ProfilePage/ProfilePage.tsx";
 import { Login } from "./routes/Login/Login";
 import { Register } from "./routes/Register/Register";
+import { NewListingPage } from "./routes/NewListingPage/NewListingPage";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "/new-listing",
+        element: <NewListingPage />,
       },
     ],
   },

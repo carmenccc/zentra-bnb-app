@@ -10,8 +10,8 @@ npm publish --access public
 
 # Step 2: Update frontend and backend
 cd ../frontend
-npm install shared-package-name@latest
+npm install @zentra/shared@latest
 cd ../backend
-npm install shared-package-name@latest
+npm install @zentra/shared@latest
 
 echo "✅ Shared package published and updated in frontend and backend."

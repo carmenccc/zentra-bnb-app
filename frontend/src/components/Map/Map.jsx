@@ -5,7 +5,10 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { Pin } from "../Pin/Pin";
 
 export const Map = ({ items }) => {
-  const position = [51.505, -0.09];
+  // const position = [51.505, -0.09];
+  const position = items
+    ? [items[0].latitude, items[0].longitude]
+    : [51.505, -0.09];
 
   return (
     <MapContainer

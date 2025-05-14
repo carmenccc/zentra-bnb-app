@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Chat } from "../../components/Chat/Chat";
 import { List } from "../../components/List/List";
 import { useAuth } from "../../context/AuthContext";
@@ -61,21 +61,27 @@ export const ProfilePage = () => {
           {/* My list */}
           <div className="title">
             <h1>My List</h1>
-            <button>Create New Post</button>
+            <Link to="/new-listing">
+              <button>Create New Post</button>
+            </Link>
           </div>
-          {userData[0]?.data ? (
+          {userData[0].isLoading ? (
+            <p>Loading...</p>
+          ) : userData[0]?.data ? (
             <List listData={userData[0]?.data || []} />
           ) : (
-            <p>Not listing by user</p>
+            <p>No listing by user</p>
           )}
           {/* Saved list */}
           <div className="title">
             <h1>Saved List</h1>
           </div>
-          {userData[1]?.data ? (
+          {userData[1].isLoading ? (
+            <p>Loading...</p>
+          ) : userData[1]?.data ? (
             <List listData={userData[1]?.data || []} />
           ) : (
-            <p>Not saved listing</p>
+            <p>No saved listing</p>
           )}
         </div>
       </div>

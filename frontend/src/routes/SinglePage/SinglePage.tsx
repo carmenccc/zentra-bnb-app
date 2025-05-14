@@ -102,11 +102,11 @@ export const SinglePage = () => {
 
     if (!saved) {
       console.log("saving");
-      res = await saveListing(data.id);
+      res = await saveListing(data.id!);
       if (res.success) setSaved(true);
     } else {
       console.log("unsaving");
-      res = await unsaveListing(data.id);
+      res = await unsaveListing(data.id!);
       if (res.success) setSaved(false);
     }
   };
@@ -211,7 +211,7 @@ export const SinglePage = () => {
             </div>
           </div>
           <ListingReservation
-            price={100}
+            price={data.price}
             dateRange={selectedDates}
             onChangeDate={setSelectedDates}
             disabledDates={data.disabledDates || []}

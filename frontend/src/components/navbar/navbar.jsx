@@ -15,10 +15,6 @@ export const Navbar = () => {
           <img src="./logo.png" alt="" />
           <span>ZentraB&B</span>
         </a>
-        <a href="/">Home</a>
-        <a href="/">About</a>
-        <a href="/">Contact</a>
-        <a href="/">Agents</a>
       </div>
       <div className="right">
         {currentUser ? (
