@@ -8,6 +8,7 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+COPY node_modules/leaflet/dist/images/* public/
 RUN npm run build
 
 # 2. Serve with Nginx
